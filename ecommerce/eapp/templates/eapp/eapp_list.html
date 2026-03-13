@@ -1,10 +1,42 @@
-
 {% extends "layout.html" %}
 
 {% block title %}
-    Eapp  Page
+    Eapp Page
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome  to Eapp Page </a> </p>
+
+<section class="max-w-7xl mx-auto px-4 py-12">
+  <h1 class="text-3xl font-medium text-slate-800 text-center mb-2 font-poppins">New Arrivals</h1>
+  <p class="text-slate-600 mb-10 font-poppins text-center">Explore the latest additions to our collection.</p>
+
+  {% if eapp|length == 0 %}
+    <p class="text-gray-500 text-center">No posts found.</p>
+  {% else %}
+    <section class="flex flex-wrap items-center justify-center gap-6">
+      {% for post in eapp %}
+        <a href="/page/{{ post.slug }}/" class="group w-56">
+          {% if post.banner.url %}
+            <img
+              class="rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-top"
+              src="{{ post.banner.url }}"
+              alt="{{ post.title }}">
+          {% else %}
+            <div class="rounded-lg w-full h-72 bg-gradient-to-tr from-sky-400 to-indigo-500 flex items-center justify-center text-white">
+              <span class="font-medium">No image</span>
+            </div>
+          {% endif %}
+
+          <p class="text-sm mt-2 font-poppins text-slate-800">{{ post.title }}</p>
+
+          {% if post.price %}
+            <p class="text-xl font-poppins text-slate-900">{{ post.price }}</p>
+          {% else %}
+            <p class="text-sm mt-1 text-zinc-500 font-poppins">{{ post.body|truncatechars:60 }}</p>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </section>
+  {% endif %}
+</section>
 {% endblock %}
